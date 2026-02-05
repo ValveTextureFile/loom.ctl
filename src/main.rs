@@ -1,5 +1,6 @@
 mod interface;
 mod commands;
+mod profilet;
 
 use clap::Parser;
 use interface::cli;
