@@ -1,8 +1,8 @@
-use tracing::info;
+use tracing::{info, warn, debug};
 
 use crate::{ctx::Context, interface::args::RunArgs};
 
-pub fn handle(a: RunArgs, ctx: Context) -> anyhow::Result<()> {
+pub fn handle(a: RunArgs, ctx: &mut Context) -> anyhow::Result<()> {
     // if ctx.verbose > 0 {
     //     eprintln!("[run] {a:#?}");
     // } else {
@@ -15,7 +15,8 @@ pub fn handle(a: RunArgs, ctx: Context) -> anyhow::Result<()> {
     //         a.passthrough.len()
     //     );
     // }
-    info!("[run] profile={:?} engine={:?} iwad={:?} mods={} passthrough={}",
+    info!("[run] {a:#?}");
+    debug!("[run] profile={:?} engine={:?} iwad={:?} mods={} passthrough={}",
             a.profile,
             a.engine,
             a.iwad,

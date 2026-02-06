@@ -33,7 +33,7 @@ pub mod ctx {
 }
 
 pub mod cli {
-    use super::args::{DoctorArgs, ListArgs, PrintCmdArgs, ProfileArgs, RunArgs, ScanArgs};
+    use super::args::{DoctorArgs, ListArgs, ProfileArgs, RunArgs, ScanArgs};
     use super::{Parser, Subcommand};
 
     #[derive(Parser, Debug)]
@@ -42,10 +42,6 @@ pub mod cli {
         /// Increase verbosity (-v, -vv)
         #[arg(short, long, action = clap::ArgAction::Count)]
         pub verbose: u8,
-
-        /// Emit JSON output where supported
-        #[arg(long, global = true)]
-        pub json: bool,
 
         #[command(subcommand)]
         pub cmd: Command,
@@ -64,9 +60,6 @@ pub mod cli {
 
         /// Validate config and profiles
         Doctor(DoctorArgs),
-
-        /// Print the engine command without running it
-        PrintCmd(PrintCmdArgs),
 
         /// Manage profiles
         Profile(ProfileArgs),
@@ -125,12 +118,6 @@ pub mod args {
     pub struct DoctorArgs {}
 
     #[derive(Parser, Debug)]
-    /// Print the exact engine command for a profile
-    pub struct PrintCmdArgs {
-        pub profile: String,
-    }
-
-    #[derive(Parser, Debug)]
     pub struct ProfileArgs {
         #[command(subcommand)]
         pub cmd: ProfileCmd,
@@ -146,6 +133,9 @@ pub mod args {
 
         /// Set profile fields
         Set(ProfileSet),
+
+        /// Find the path to the given profile
+        Find(ProfileFind),
 
         /// Add mods to a profile
         AddMod(ProfileAddMod),
@@ -173,6 +163,11 @@ pub mod args {
 
         #[arg(long)]
         pub iwad: Option<String>,
+    }
+
+    #[derive(Parser, Debug)]
+    pub struct ProfileFind {
+        pub name: String
     }
 
     #[derive(Parser, Debug)]

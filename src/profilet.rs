@@ -35,9 +35,9 @@ impl Profile {
     }
 }
 
-pub mod pathbuf {
-    use std::path::PathBuf;
+pub mod path {
     use crate::interface::ctx::Context;
+    use std::path::{PathBuf};
 
     pub fn profile_path(ctx: &Context, name: &str) -> PathBuf {
         ctx.profiles_dir.join(format!("{name}.toml"))

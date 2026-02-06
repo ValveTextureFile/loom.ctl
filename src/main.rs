@@ -9,9 +9,16 @@ use interface::ctx;
 
 fn main() -> anyhow::Result<()> {
     let cli = cli::Cli::parse();
-    interface::logging::initlogging(cli.verbose);
+    let verbose;
+    if cli.verbose < 1{
+        verbose = 4;    
+    } else {
+        verbose = cli.verbose;
+    }
 
-    let mut ctx = ctx::Context::new(cli.verbose)?;
+    interface::logging::initlogging(verbose);
+
+    let mut ctx = ctx::Context::new(verbose)?;
     commands::dispatch(cli.cmd, &mut ctx)?;
     Ok(())
 }

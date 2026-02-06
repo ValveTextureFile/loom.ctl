@@ -1,23 +1,20 @@
-use tracing::{info, warn, debug};
+use tracing::{info, debug};
 
 use crate::{
-    ctx::Context, interface::args::ProfileNew, profilet::{Profile, pathbuf::profile_path},
+    ctx::Context, interface::args::ProfileNew, profilet::{Profile, path::profile_path},
 };
 
 pub fn handle(a: ProfileNew, ctx: &Context) -> anyhow::Result<()> {
-    debug!("#[profile::new] called");
+    debug!("called");
     let path = profile_path(ctx, &a.name);
 
-    if path.exists() {
-        warn!("[profile::new] profile {} already exists", a.name);
-        anyhow::bail!("profile '{}' already exists", a.name);
-    }
+    anyhow::ensure!(path.exists() == false, "path already exists");
 
-    debug!("#[profile::new] making new profile.");
+    debug!("making new profile.");
     let p = Profile::new(a.name.clone());
-    debug!("#[profile::new] saving...");
+    debug!("saving...");
     p.save(&path)?;
 
-    info!("[profile::new] new profile @ {}", a.name);
+    info!("new profile @ {}", a.name);
     Ok(())
 }
